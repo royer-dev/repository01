@@ -1,0 +1,1023 @@
+
+
+
+Created by: Matheus H. Royer
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Guardian Life PRO</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+transition:0.2s;
+}
+
+body{
+background:linear-gradient(135deg,#dfe9f3,#7eace0);
+min-height:100vh;
+padding-bottom:40px;
+}
+
+/* HEADER */
+
+header{
+padding:25px;
+text-align:center;
+font-size:38px;
+font-weight:bold;
+color:white;
+background:linear-gradient(90deg,#5c6bc0,#42a5f5);
+box-shadow:0 4px 12px rgba(0,0,0,.2);
+}
+
+/* LAYOUT */
+
+.wrap{
+padding:20px;
+max-width:1400px;
+margin:auto;
+}
+
+/* GRID */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(2,minmax(320px,1fr));
+gap:24px;
+align-items:stretch;
+}
+
+@media(max-width:850px){
+.grid{
+grid-template-columns:1fr;
+}
+}
+
+/* CARDS */
+
+.card{
+background:rgba(255,255,255,0.96);
+padding:26px;
+border-radius:28px;
+box-shadow:
+0 10px 25px rgba(0,0,0,.12),
+0 4px 10px rgba(0,0,0,.08);
+border:1px solid rgba(255,255,255,.4);
+backdrop-filter:blur(10px);
+position:relative;
+overflow:hidden;
+}
+
+.card::before{
+content:'';
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:7px;
+background:linear-gradient(90deg,#42a5f5,#5c6bc0);
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:
+0 18px 35px rgba(0,0,0,.18),
+0 8px 18px rgba(0,0,0,.10);
+}
+
+h2{
+font-size:36px;
+margin-bottom:18px;
+color:#24476b;
+}
+
+h3{
+font-size:30px;
+margin-bottom:18px;
+color:#24476b;
+}
+
+button{
+border:none;
+padding:16px;
+border-radius:18px;
+background:linear-gradient(135deg,#2196f3,#1565c0);
+color:white;
+font-size:20px;
+font-weight:bold;
+cursor:pointer;
+width:100%;
+margin-top:12px;
+box-shadow:0 6px 14px rgba(33,150,243,.3);
+}
+
+button:hover{
+transform:scale(1.02);
+filter:brightness(1.05);
+}
+
+.back{
+background:linear-gradient(135deg,#757575,#424242);
+}
+
+.green{
+background:linear-gradient(135deg,#4caf50,#2e7d32);
+}
+
+.danger{
+background:linear-gradient(135deg,#ef5350,#c62828);
+}
+
+input{
+width:100%;
+padding:16px;
+border-radius:16px;
+border:2px solid #d7e3f0;
+font-size:20px;
+margin-top:12px;
+background:#f8fbff;
+}
+
+input:focus{
+outline:none;
+border-color:#42a5f5;
+background:white;
+}
+
+.big{
+font-size:30px;
+font-weight:bold;
+text-align:center;
+}
+
+.screen{
+display:none;
+}
+
+.show{
+display:block;
+}
+
+/* CLIMA */
+
+.clima-box{
+text-align:center;
+padding:20px;
+background:#f0f7ff;
+border-radius:20px;
+}
+
+.temp-atual{
+font-size:48px;
+font-weight:bold;
+color:#0a84ff;
+}
+
+/* LISTAS */
+
+ul{
+list-style:none;
+margin-top:15px;
+}
+
+li{
+background:linear-gradient(135deg,#eef5fc,#ddeaf8);
+padding:16px;
+border-radius:18px;
+margin-top:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:20px;
+box-shadow:0 3px 8px rgba(0,0,0,.06);
+}
+
+/* CALCULADORA */
+
+.calc-display{
+width:100%;
+height:90px;
+background:#f8f9fa;
+border:2px solid #0a84ff;
+border-radius:18px;
+font-size:38px;
+display:flex;
+justify-content:flex-end;
+align-items:center;
+padding:15px;
+margin-bottom:15px;
+overflow:hidden;
+}
+
+.calc-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+}
+
+.calc-btn{
+height:75px;
+font-size:28px;
+border-radius:18px;
+margin-top:0;
+}
+
+.op-btn{
+background:#ff9500;
+}
+
+.equal-btn{
+background:#4caf50;
+grid-column:span 2;
+}
+
+.clear-btn{
+background:#e53935;
+grid-column:span 2;
+}
+
+/* MODO ESCURO */
+
+.modo-noturno{
+background:#101820;
+color:white;
+}
+
+.modo-noturno .card{
+background:#1c2733;
+border:1px solid #314355;
+}
+
+.modo-noturno h2,
+.modo-noturno h3{
+color:white;
+}
+
+.modo-noturno li{
+background:#263544;
+}
+
+.modo-noturno input{
+background:#263544;
+color:white;
+border:1px solid #3c5268;
+}
+
+.modo-noturno .calc-display{
+background:#263544;
+color:white;
+border:2px solid #4d6d8a;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+Guardian Life PRO
+</header>
+
+<div class="wrap">
+
+<!-- LOGIN -->
+
+<div id="login" class="screen show card">
+
+<h2>Bem-vindo</h2>
+
+<p style="font-size:22px;">
+Digite sua senha:
+</p>
+
+<input type="password" id="senha" placeholder="Senha">
+
+<button onclick="login()">
+Entrar
+</button>
+
+<hr style="margin:25px 0;">
+
+<h3 style="color:#e53935;text-align:center;">
+EMERGÊNCIA
+</h3>
+
+<button class="danger" onclick="acionarEmergencia()">
+🚨 CHAMAR AJUDA
+</button>
+
+</div>
+
+<!-- DASHBOARD -->
+
+<div id="dash" class="screen">
+
+<div class="grid">
+
+<div class="card">
+<h3>Medicamentos</h3>
+<button onclick="openScr('med')">Abrir</button>
+</div>
+
+<div class="card">
+<h3>Consultas</h3>
+<button onclick="openScr('con')">Abrir</button>
+</div>
+
+<div class="card">
+<h3>Rotina</h3>
+<button onclick="openScr('rot')">Abrir</button>
+</div>
+
+<div class="card">
+
+<h3>Clima Atual</h3>
+
+<div class="clima-box">
+
+<div style="font-size:60px;">
+☀️
+</div>
+
+<div class="temp-atual">
+25°C
+</div>
+
+<div style="font-size:20px;">
+Tempo agradável
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+<h3>Calendário</h3>
+<div id="data" class="big"></div>
+</div>
+
+<div class="card">
+<h3>Calculadora</h3>
+<button onclick="openScr('calc')">Abrir</button>
+</div>
+
+<div class="card">
+<h3>Contatos</h3>
+<button onclick="openScr('cont')">Abrir</button>
+</div>
+
+<div class="card">
+<h3>Saúde</h3>
+<button onclick="openScr('saude')">Abrir</button>
+</div>
+
+<div class="card">
+<h3>Informações Pessoais</h3>
+<button onclick="openScr('perfil')">Abrir</button>
+</div>
+
+<div class="card">
+<h3>Alergias e Medicamentos</h3>
+<button onclick="openScr('alergias')">Abrir</button>
+</div>
+
+<div class="card">
+<h3>Configurações</h3>
+<button onclick="openScr('config')">Abrir</button>
+</div>
+
+<div class="card">
+<h3>Tamanho da Fonte</h3>
+
+<button onclick="aumentarFonte()">
+Aumentar Fonte 🔍+
+</button>
+
+<button onclick="diminuirFonte()">
+Diminuir Fonte 🔍-
+</button>
+
+</div>
+
+<div class="card">
+<h3>Ajuda Rápida</h3>
+
+<button class="danger" onclick="acionarEmergencia()">
+🚨 Emergência
+</button>
+
+</div>
+
+</div>
+</div>
+
+<!-- MED -->
+
+<div id="med" class="screen card">
+
+<h2>Medicamentos</h2>
+
+<input id="m1" placeholder="Nome do remédio">
+<input id="m2" type="time">
+
+<button onclick="addItem('meds','m1','m2','lmed')">
+Salvar
+</button>
+
+<ul id="lmed"></ul>
+
+<button class="back" onclick="home()">Voltar</button>
+
+</div>
+
+<!-- CONSULTAS -->
+
+<div id="con" class="screen card">
+
+<h2>Consultas</h2>
+
+<input id="c1" placeholder="Médico">
+<input id="c2" placeholder="Clínica">
+<input id="c3" type="datetime-local">
+
+<button onclick="addConsulta()">
+Salvar
+</button>
+
+<ul id="lcon"></ul>
+
+<button class="back" onclick="home()">Voltar</button>
+
+</div>
+
+<!-- ROTINA -->
+
+<div id="rot" class="screen card">
+
+<h2>Rotina</h2>
+
+<input id="r1" type="time">
+<input id="r2" placeholder="Atividade">
+
+<button onclick="addItem('rots','r1','r2','lrot')">
+Salvar
+</button>
+
+<ul id="lrot"></ul>
+
+<button class="back" onclick="home()">Voltar</button>
+
+</div>
+
+<!-- CALCULADORA -->
+
+<div id="calc" class="screen card">
+
+<h2>Calculadora</h2>
+
+<div class="calc-display" id="display">
+0
+</div>
+
+<div class="calc-grid">
+
+<button class="calc-btn clear-btn" onclick="clearCalc()">C</button>
+
+<button class="calc-btn op-btn" onclick="addCalc('/')">÷</button>
+
+<button class="calc-btn op-btn" onclick="addCalc('*')">×</button>
+
+<button class="calc-btn" onclick="addCalc('7')">7</button>
+<button class="calc-btn" onclick="addCalc('8')">8</button>
+<button class="calc-btn" onclick="addCalc('9')">9</button>
+
+<button class="calc-btn op-btn" onclick="addCalc('-')">-</button>
+
+<button class="calc-btn" onclick="addCalc('4')">4</button>
+<button class="calc-btn" onclick="addCalc('5')">5</button>
+<button class="calc-btn" onclick="addCalc('6')">6</button>
+
+<button class="calc-btn op-btn" onclick="addCalc('+')">+</button>
+
+<button class="calc-btn" onclick="addCalc('1')">1</button>
+<button class="calc-btn" onclick="addCalc('2')">2</button>
+<button class="calc-btn" onclick="addCalc('3')">3</button>
+
+<button class="calc-btn" onclick="addCalc('.')">,</button>
+
+<button class="calc-btn" onclick="addCalc('0')">0</button>
+
+<button class="calc-btn equal-btn" onclick="execCalc()">=</button>
+
+</div>
+
+<button class="back" onclick="home()">Voltar</button>
+
+</div>
+
+<!-- CONTATOS -->
+
+<div id="cont" class="screen card">
+
+<h2>Contatos</h2>
+
+<input id="ct1" placeholder="Nome">
+<input id="ct2" placeholder="Telefone">
+
+<button onclick="addItem('contatos','ct1','ct2','lcont')">
+Salvar
+</button>
+
+<ul id="lcont"></ul>
+
+<button class="back" onclick="home()">Voltar</button>
+
+</div>
+
+<!-- SAUDE -->
+
+<div id="saude" class="screen card">
+
+<h2>Saúde</h2>
+
+<input id="peso" placeholder="Peso">
+<input id="pressao" placeholder="Pressão">
+<input id="tipo" placeholder="Tipo sanguíneo">
+
+<button onclick="salvarSaude()">
+Salvar
+</button>
+
+<div id="dadosSaude" style="font-size:22px;margin-top:15px;"></div>
+
+<button class="back" onclick="home()">Voltar</button>
+
+</div>
+
+<!-- PERFIL -->
+
+<div id="perfil" class="screen card">
+
+<h2>Informações Pessoais</h2>
+
+<input id="nomePerfil" placeholder="Nome completo">
+<input id="idadePerfil" placeholder="Idade">
+<input id="nascimentoPerfil" type="date">
+<input id="enderecoPerfil" placeholder="Endereço">
+<input id="telefonePerfil" placeholder="Telefone">
+
+<button onclick="salvarPerfil()">
+Salvar Informações
+</button>
+
+<div id="dadosPerfil"
+style="margin-top:20px;font-size:22px;">
+</div>
+
+<button class="back" onclick="home()">Voltar</button>
+
+</div>
+
+<!-- ALERGIAS -->
+
+<div id="alergias" class="screen card">
+
+<h2>Alergias e Medicamentos</h2>
+
+<input id="alergiaInput"
+placeholder="Ex: Penicilina">
+
+<input id="medicamentoUso"
+placeholder="Medicamentos de uso contínuo">
+
+<button onclick="salvarAlergias()">
+Salvar
+</button>
+
+<div id="dadosAlergias"
+style="margin-top:20px;font-size:22px;">
+</div>
+
+<button class="back" onclick="home()">Voltar</button>
+
+</div>
+
+<!-- CONFIG -->
+
+<div id="config" class="screen card">
+
+<h2>Configurações</h2>
+
+<button class="green" onclick="modoClaro()">
+☀️ Modo Claro
+</button>
+
+<button onclick="modoEscuro()">
+🌙 Modo Escuro
+</button>
+
+<button class="danger" onclick="resetarSistema()">
+🗑️ Resetar Sistema
+</button>
+
+<button class="back" onclick="home()">Voltar</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* LOGIN */
+
+function login(){
+
+let senha=document.getElementById('senha').value
+
+if(senha===""){
+alert("Digite uma senha")
+return
+}
+
+let salva=localStorage.getItem('glpass')
+
+if(!salva){
+localStorage.setItem('glpass',senha)
+}
+
+if(senha===localStorage.getItem('glpass')){
+home()
+}else{
+alert("Senha incorreta")
+}
+
+}
+
+/* TELAS */
+
+function hideAll(){
+document.querySelectorAll('.screen').forEach(x=>{
+x.classList.remove('show')
+})
+}
+
+function openScr(id){
+hideAll()
+document.getElementById(id).classList.add('show')
+loadAll()
+}
+
+function home(){
+hideAll()
+document.getElementById('dash').classList.add('show')
+showDate()
+loadAll()
+}
+
+/* DATA */
+
+function showDate(){
+
+let d=new Date()
+
+const dias=[
+'Domingo','Segunda','Terça','Quarta',
+'Quinta','Sexta','Sábado'
+]
+
+const meses=[
+'Janeiro','Fevereiro','Março','Abril',
+'Maio','Junho','Julho','Agosto',
+'Setembro','Outubro','Novembro','Dezembro'
+]
+
+document.getElementById('data').innerText=
+`${dias[d.getDay()]}, ${d.getDate()} de ${meses[d.getMonth()]}`
+}
+
+/* CALCULADORA */
+
+let calcExpressao=''
+
+function addCalc(v){
+calcExpressao+=v
+updateCalc()
+}
+
+function clearCalc(){
+calcExpressao=''
+updateCalc()
+}
+
+function updateCalc(){
+document.getElementById('display').innerText=
+calcExpressao || '0'
+}
+
+function execCalc(){
+
+try{
+calcExpressao=
+eval(calcExpressao).toString()
+
+updateCalc()
+
+}catch{
+alert('Erro')
+}
+
+}
+
+/* CRUD */
+
+function addItem(key,i1,i2,list){
+
+let arr=JSON.parse(localStorage.getItem(key)||'[]')
+
+arr.push(
+document.getElementById(i1).value+
+' - '+
+document.getElementById(i2).value
+)
+
+localStorage.setItem(key,JSON.stringify(arr))
+
+document.getElementById(i1).value=''
+document.getElementById(i2).value=''
+
+render(key,list)
+
+}
+
+function addConsulta(){
+
+let arr=JSON.parse(localStorage.getItem('cons')||'[]')
+
+arr.push(
+c1.value+' - '+c2.value+' - '+c3.value
+)
+
+localStorage.setItem('cons',JSON.stringify(arr))
+
+c1.value=''
+c2.value=''
+c3.value=''
+
+render('cons','lcon')
+
+}
+
+function render(key,list){
+
+let arr=JSON.parse(localStorage.getItem(key)||'[]')
+
+let el=document.getElementById(list)
+
+if(!el) return
+
+el.innerHTML=''
+
+arr.forEach((t,n)=>{
+
+el.innerHTML+=`
+<li>
+${t}
+<button style="background:#e53935;width:auto;padding:10px;"
+onclick="del('${key}',${n},'${list}')">
+X
+</button>
+</li>
+`
+
+})
+
+}
+
+function del(key,n,list){
+
+let arr=JSON.parse(localStorage.getItem(key)||'[]')
+
+arr.splice(n,1)
+
+localStorage.setItem(key,JSON.stringify(arr))
+
+render(key,list)
+
+}
+
+/* SAUDE */
+
+function salvarSaude(){
+
+localStorage.setItem('peso',peso.value)
+localStorage.setItem('pressao',pressao.value)
+localStorage.setItem('tipo',tipo.value)
+
+mostrarSaude()
+
+}
+
+function mostrarSaude(){
+
+document.getElementById('dadosSaude').innerHTML=
+`
+<p><b>Peso:</b> ${localStorage.getItem('peso')||'-'}</p>
+<p><b>Pressão:</b> ${localStorage.getItem('pressao')||'-'}</p>
+<p><b>Tipo:</b> ${localStorage.getItem('tipo')||'-'}</p>
+`
+
+}
+
+/* PERFIL */
+
+function salvarPerfil(){
+
+localStorage.setItem('nomePerfil',nomePerfil.value)
+localStorage.setItem('idadePerfil',idadePerfil.value)
+localStorage.setItem('nascimentoPerfil',nascimentoPerfil.value)
+localStorage.setItem('enderecoPerfil',enderecoPerfil.value)
+localStorage.setItem('telefonePerfil',telefonePerfil.value)
+
+mostrarPerfil()
+
+}
+
+function mostrarPerfil(){
+
+document.getElementById('dadosPerfil').innerHTML=
+`
+<p><b>Nome:</b> ${localStorage.getItem('nomePerfil')||'-'}</p>
+
+<p><b>Idade:</b> ${localStorage.getItem('idadePerfil')||'-'}</p>
+
+<p><b>Nascimento:</b> ${localStorage.getItem('nascimentoPerfil')||'-'}</p>
+
+<p><b>Endereço:</b> ${localStorage.getItem('enderecoPerfil')||'-'}</p>
+
+<p><b>Telefone:</b> ${localStorage.getItem('telefonePerfil')||'-'}</p>
+`
+
+}
+
+/* ALERGIAS */
+
+function salvarAlergias(){
+
+localStorage.setItem(
+'alergiaGuardian',
+alergiaInput.value
+)
+
+localStorage.setItem(
+'medUsoGuardian',
+medicamentoUso.value
+)
+
+mostrarAlergias()
+
+}
+
+function mostrarAlergias(){
+
+document.getElementById('dadosAlergias').innerHTML=
+`
+<p>
+<b>Alergias:</b>
+${localStorage.getItem('alergiaGuardian')||'-'}
+</p>
+
+<p>
+<b>Medicamentos:</b>
+${localStorage.getItem('medUsoGuardian')||'-'}
+</p>
+`
+
+}
+
+/* FONTE */
+
+let tamanhoAtual = parseInt(
+localStorage.getItem('fonteGuardian')
+) || 20
+
+function aplicarFonte(){
+
+document.querySelectorAll(
+'body, p, li, button, input, h2, h3'
+).forEach(el=>{
+
+el.style.fontSize = tamanhoAtual + 'px'
+
+})
+
+localStorage.setItem(
+'fonteGuardian',
+tamanhoAtual
+)
+
+}
+
+function aumentarFonte(){
+
+if(tamanhoAtual < 40){
+
+tamanhoAtual += 2
+
+aplicarFonte()
+
+}
+
+}
+
+function diminuirFonte(){
+
+if(tamanhoAtual > 14){
+
+tamanhoAtual -= 2
+
+aplicarFonte()
+
+}
+
+}
+
+/* TEMA */
+
+function modoClaro(){
+
+document.body.classList.remove('modo-noturno')
+
+localStorage.setItem('temaGuardian','claro')
+
+}
+
+function modoEscuro(){
+
+document.body.classList.add('modo-noturno')
+
+localStorage.setItem('temaGuardian','escuro')
+
+}
+
+/* RESET */
+
+function resetarSistema(){
+
+let confirma=confirm(
+'Tem certeza que deseja apagar TODOS os dados?'
+)
+
+if(confirma){
+
+localStorage.clear()
+
+alert('Sistema resetado!')
+
+location.reload()
+
+}
+
+}
+
+/* EMERGENCIA */
+
+function acionarEmergencia(){
+
+alert('🚨 Emergência acionada!')
+
+}
+
+/* LOAD */
+
+function loadAll(){
+
+render('meds','lmed')
+render('rots','lrot')
+render('cons','lcon')
+render('contatos','lcont')
+
+mostrarSaude()
+mostrarPerfil()
+mostrarAlergias()
+
+}
+
+/* INICIAR */
+
+showDate()
+aplicarFonte()
+
+</script>
+
+</body>
+</html>
